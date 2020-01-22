@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Migration Date</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Roboto mono', Consolas, monaco;
+        }
+        #out {
+            background: #eee;
+            border: 1px solid #888;
+            border-radius: 4px;
+            height: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1><input id="out" readonly="true"></h1>
+    <button type="button" onClick="copyToClipboard()">Copy</button>
+
+    <script>
+        function format(i) {
+            return parseInt(i, 10) < 10 ? '0' + i : i;
+        };
+
+        function getCurrentYYYYMMDDHHmms() {
+            const date = new Date();
+            return [date.getUTCFullYear(), format(date.getUTCMonth() + 1), format(date.getUTCDate()), format(date
+                .getUTCHours()), format(date.getUTCMinutes()), format(date.getUTCSeconds())].join('');
+        }
+
+        var $out = document.getElementById('out');
+
+        setInterval(function () {
+            $out.value = getCurrentYYYYMMDDHHmms();
+        }, 2);
+        
+        $out.addEventListener('click', function (e) {
+            $out.select();
+        });
+        
+        var copyToClipboard = function () {
+          var el = document.createElement('textarea');
+          el.value = document.getElementById('out').value;
+          el.setAttribute('readonly', '');
+          el.style.position = 'absolute';
+          el.style.left = '-9999px';
+          document.body.appendChild(el);
+          el.select();
+          document.execCommand('copy');
+          document.body.removeChild(el);
+        };
+    </script>
+</body>
+
+</html>
